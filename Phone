@@ -1,0 +1,68 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Phone implements Comparable<Phone> {
+
+    private String manufacturer;
+    private String model;
+    private int price;
+
+    public Phone(String manufacturer, String model, int price) {
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.price = price;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public int compareTo(Phone o) {
+        return Integer.compare(this.price, o.price);
+    }
+
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
+    public static void main(String[] args) {
+        List<Phone> phoneList = new ArrayList<>();
+        phoneList.add(new Phone("Samsung", "Galaxy S10", 699));
+        phoneList.add(new Phone("Apple", "iPhone X", 999));
+        phoneList.add(new Phone("Huawei", "P30 Pro", 999));
+        phoneList.add(new Phone("Samsung", "Galaxy Note 10", 949));
+        phoneList.add(new Phone("Apple", "iPhone 11", 699));
+        phoneList.add(new Phone("Google", "Pixel 4", 799));
+
+        List<Phone> samsungModels = phoneList.stream()
+                .filter(p -> p.getManufacturer().equals("Samsung"))
+                .collect(Collectors.toList());
+
+        System.out.println("Модели Samsung:");
+        samsungModels.forEach(System.out::println);
+
+        List<String> phoneModelsWithPrices = phoneList.stream()
+                .sorted(Comparator.comparingInt(Phone::getPrice))
+                .map(p -> p.getModel() + " - $" + p.getPrice())
+                .collect(Collectors.toList());
+
+        System.out.println("Отсортированные модели:");
+        phoneModelsWithPrices.forEach(System.out::println);
+    }
+}
